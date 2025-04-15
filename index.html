@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ゴリラの神から加護された令嬢は王立騎士団で可愛がられる - タイトルジェネレーター</title>
+    <style>
+        body {
+            font-family: 'Hiragino Kaku Gothic Pro', 'Meiryo', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        h1 {
+            font-size: 24px;
+            color: #8B4513;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .result {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px solid #E6CCB2;
+            border-radius: 8px;
+            background-color: #FFF8E1;
+            text-align: center;
+            min-height: 50px;
+        }
+        button {
+            background-color: #8B4513;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #A0522D;
+        }
+        .history {
+            margin-top: 30px;
+        }
+        .history-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        .history-item {
+            padding: 8px;
+            border-bottom: 1px dashed #eee;
+        }
+        .history-item:hover {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>ゴリラの神から加護された令嬢は王立騎士団で可愛がられる</h1>
+    
+    <div class="container">
+        <p>異世界ファンタジー風のランダムタイトルジェネレーター</p>
+        
+        <div class="result" id="result">
+            ゴリラの神から加護された令嬢は王立騎士団で可愛がられる
+        </div>
+        
+        <button onclick="generateTitle()">新しいタイトルを生成</button>
+        
+        <div class="history">
+            <div class="history-title">履歴</div>
+            <div id="history-container"></div>
+        </div>
+    </div>
+
+    <script>
+        // 単語リスト
+        const words = {
+            animals: ["ゴリラ", "ドラゴン", "フェニックス", "ウサギ", "クマ", "オオカミ", "キツネ", "ネコ", "ペガサス", "ユニコーン", "蛇", "鷹", "狼", "虎", "猫又", "鬼", "天狗", "河童", "九尾", "獅子"],
+            deities: ["神", "女神", "精霊", "魔王", "悪魔", "妖精", "天使", "賢者", "竜王", "守護者", "巫女", "魔女", "勇者", "英雄", "帝王", "皇帝", "精霊王", "大魔導師", "創造主", "始祖"],
+            blessings: ["加護", "祝福", "バフ", "デバフ", "強化", "弱体化", "呪い", "契約", "誓約", "啓示", "導き", "試練", "宿命", "運命", "使命", "才能", "特質", "スキル", "特性", "加速", "回復", "無敵", "再生", "暴走", "暴発", "超越", "変異", "侵食", "痛恨", "必中", "必殺", "魔力", "英知", "剣技", "魔法", "秘術", "神通力", "奇跡"],
+            characters: ["令嬢", "王女", "姫", "騎士", "魔法使い", "勇者", "少女", "転生者", "冒険者", "傭兵", "賢者", "神官", "魔術師", "剣士", "公爵令嬢", "侯爵令息", "聖女", "巫女", "王子", "皇子"],
+            places: ["王立騎士団", "魔法学園", "異世界", "辺境領", "王宮", "迷宮", "古代遺跡", "竜の巣", "精霊の森", "魔王城", "聖地", "異境", "辺境", "帝国", "王国", "公国", "砂漠", "雪原", "海底都市", "空中庭園"],
+            actions: ["可愛がら", "愛さ", "恐れら", "憧れら", "崇めら", "認めら", "嫌わ", "狙わ", "守ら", "育てら", "鍛えら", "導か", "見初めら", "見いださ", "褒めら", "敬わ", "迎えら", "重宝さ", "優遇さ", "期待さ"]
+        };
+
+        // ランダムな要素を取得する関数
+        function getRandomElement(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        // メモリ内の履歴配列
+        let titleHistory = [];
+        
+        // 履歴表示更新関数
+        function updateHistoryDisplay() {
+            const historyContainer = document.getElementById('history-container');
+            historyContainer.innerHTML = '';
+            
+            titleHistory.forEach(title => {
+                const div = document.createElement('div');
+                div.className = 'history-item';
+                div.textContent = title;
+                div.addEventListener('click', function() {
+                    document.getElementById('result').textContent = title;
+                });
+                historyContainer.appendChild(div);
+            });
+        }
+
+        // タイトル生成関数
+        function generateTitle() {
+            // 「（名詞）の（神などの名詞）から（加護などの助動詞）された（令嬢などの人物）は（王立騎士団などの組織）で（可愛がらなどの動詞）れる」形式
+            const animal = getRandomElement(words.animals);
+            const deity = getRandomElement(words.deities);
+            const blessing = getRandomElement(words.blessings);
+            const character = getRandomElement(words.characters);
+            const place = getRandomElement(words.places);
+            const action = getRandomElement(words.actions);
+            
+            const title = `${animal}の${deity}から${blessing}された${character}は${place}で${action}れる`;
+            
+            // 結果を表示
+            document.getElementById('result').textContent = title;
+            
+            // 履歴に追加
+            titleHistory.unshift(title);
+            if (titleHistory.length > 10) {
+                titleHistory.pop();
+            }
+            
+            // 履歴表示を更新
+            updateHistoryDisplay();
+        }
+    </script>
+</body>
+</html>
