@@ -35,6 +35,31 @@
             background-color: #FFF8E1;
             text-align: center;
             min-height: 50px;
+            line-height: 1.5;
+        }
+        .animal {
+            color: #8B4513; /* 茶色 */
+            font-weight: bold;
+        }
+        .deity {
+            color: #800080; /* 紫 */
+            font-weight: bold;
+        }
+        .blessing {
+            color: #008000; /* 緑 */
+            font-weight: bold;
+        }
+        .character {
+            color: #FF0000; /* 赤 */
+            font-weight: bold;
+        }
+        .place {
+            color: #0000FF; /* 青 */
+            font-weight: bold;
+        }
+        .verb {
+            color: #FF8C00; /* オレンジ */
+            font-weight: bold;
         }
         button {
             background-color: #8B4513;
@@ -66,6 +91,17 @@
         .history-item:hover {
             background-color: #f9f9f9;
         }
+        .legend {
+            margin-top: 20px;
+            font-size: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .legend-item {
+            display: inline-block;
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -75,10 +111,19 @@
         <p>異世界ファンタジー風のランダムタイトルジェネレーター</p>
         
         <div class="result" id="result">
-            ゴリラの神から加護された令嬢は王立騎士団で可愛がられる
+            <span class="animal">ゴリラ</span>の<span class="deity">神</span>から<span class="blessing">加護さ</span>れた<span class="character">令嬢</span>は<span class="place">王立騎士団</span>で<span class="verb">可愛がら</span>れる
         </div>
         
         <button onclick="generateTitle()">新しいタイトルを生成</button>
+        
+        <div class="legend">
+            <span class="legend-item"><span class="animal">■</span> 動物</span>
+            <span class="legend-item"><span class="deity">■</span> 神格</span>
+            <span class="legend-item"><span class="blessing">■</span> 加護</span>
+            <span class="legend-item"><span class="character">■</span> キャラクター</span>
+            <span class="legend-item"><span class="place">■</span> 場所</span>
+            <span class="legend-item"><span class="verb">■</span> 動詞</span>
+        </div>
         
         <div class="history">
             <div class="history-title">履歴</div>
@@ -91,10 +136,10 @@
         const words = {
             animals: ["ゴリラ", "ドラゴン", "フェニックス", "ウサギ", "クマ", "オオカミ", "キツネ", "ネコ", "ペガサス", "ユニコーン", "蛇", "鷹", "狼", "虎", "猫又", "鬼", "天狗", "河童", "九尾", "獅子"],
             deities: ["神", "女神", "精霊", "魔王", "悪魔", "妖精", "天使", "賢者", "竜王", "守護者", "巫女", "魔女", "勇者", "英雄", "帝王", "皇帝", "精霊王", "大魔導師", "創造主", "始祖"],
-            blessings: ["加護", "祝福", "バフ", "デバフ", "強化", "弱体化", "呪い", "契約", "誓約", "啓示", "導き", "試練", "宿命", "運命", "使命", "才能", "特質", "スキル", "特性", "加速", "回復", "無敵", "再生", "暴走", "暴発", "超越", "変異", "侵食", "痛恨", "必中", "必殺", "魔力", "英知", "剣技", "魔法", "秘術", "神通力", "奇跡"],
+            blessings: ["加護さ", "祝福さ", "強化さ", "弱体化さ", "認定さ", "認証さ", "指名さ", "任命さ", "認可さ", "洗礼さ", "刻印さ", "封印さ", "烙印さ", "指導さ", "指南さ", "伝授さ", "契約さ", "誓約さ", "約束さ", "協約さ", "保護さ", "守護さ", "擁護さ", "後援さ", "訓練さ", "鍛錬さ", "修行さ", "特訓さ", "呪わ", "殴ら"],
             characters: ["令嬢", "王女", "姫", "騎士", "魔法使い", "勇者", "少女", "転生者", "冒険者", "傭兵", "賢者", "神官", "魔術師", "剣士", "公爵令嬢", "侯爵令息", "聖女", "巫女", "王子", "皇子"],
             places: ["王立騎士団", "魔法学園", "異世界", "辺境領", "王宮", "迷宮", "古代遺跡", "竜の巣", "精霊の森", "魔王城", "聖地", "異境", "辺境", "帝国", "王国", "公国", "砂漠", "雪原", "海底都市", "空中庭園"],
-            actions: ["可愛がら", "愛さ", "恐れら", "憧れら", "崇めら", "認めら", "嫌わ", "狙わ", "守ら", "育てら", "鍛えら", "導か", "見初めら", "見いださ", "褒めら", "敬わ", "迎えら", "重宝さ", "優遇さ", "期待さ"]
+            verbs: ["可愛がら", "愛さ", "恐れら", "憧れら", "崇めら", "認めら", "嫌わ", "狙わ", "守ら", "育てら", "鍛えら", "導か", "見初めら", "見いださ", "褒めら", "敬わ", "迎えら", "重宝さ", "優遇さ", "期待さ", "呪わ", "殴ら", "祝福さ", "教えら", "助けら", "抱きしめら", "支えら", "評価さ"]
         };
 
         // ランダムな要素を取得する関数
@@ -113,9 +158,9 @@
             titleHistory.forEach(title => {
                 const div = document.createElement('div');
                 div.className = 'history-item';
-                div.textContent = title;
+                div.innerHTML = title;
                 div.addEventListener('click', function() {
-                    document.getElementById('result').textContent = title;
+                    document.getElementById('result').innerHTML = title;
                 });
                 historyContainer.appendChild(div);
             });
@@ -129,12 +174,14 @@
             const blessing = getRandomElement(words.blessings);
             const character = getRandomElement(words.characters);
             const place = getRandomElement(words.places);
-            const action = getRandomElement(words.actions);
             
-            const title = `${animal}の${deity}から${blessing}された${character}は${place}で${action}れる`;
+            // 動詞を均等な確率で選択
+            let verb = getRandomElement(words.verbs);
+            
+            const title = `<span class="animal">${animal}</span>の<span class="deity">${deity}</span>から<span class="blessing">${blessing}</span>れた<span class="character">${character}</span>は<span class="place">${place}</span>で<span class="verb">${verb}</span>れる`;
             
             // 結果を表示
-            document.getElementById('result').textContent = title;
+            document.getElementById('result').innerHTML = title;
             
             // 履歴に追加
             titleHistory.unshift(title);
