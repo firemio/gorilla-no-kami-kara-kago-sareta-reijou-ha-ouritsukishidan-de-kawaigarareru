@@ -105,6 +105,10 @@
     </style>
 </head>
 <body>
+    <!-- MCP簡易情報表示 -->
+    <div id="mcp-info" style="font-size:12px; color:#555; background:#f6f6f6; padding:6px 12px; border-radius:6px; margin-bottom:10px;">
+        <b>MCP状態:</b> <span id="mcp-status">未接続</span> ／ <b>接続先:</b> <span id="mcp-url"></span> ／ <b>最終コマンド:</b> <span id="mcp-lastcmd">-</span>
+    </div>
     <h1>ゴリラの神から加護された令嬢は王立騎士団で可愛がられる</h1>
     <h2>ゴリ神GEN</h2>
     
@@ -244,10 +248,20 @@
     // サーバー例: http://localhost:5000/sse
     const sseUrl = "http://localhost:5000/sse"; // 必要に応じて書き換え
     const eventSource = new EventSource(sseUrl);
+    // MCP情報表示の初期化
+    document.getElementById('mcp-url').textContent = sseUrl;
+    document.getElementById('mcp-status').textContent = '接続中';
 
+    eventSource.onopen = function() {
+        document.getElementById('mcp-status').textContent = '接続中';
+    };
+    eventSource.onerror = function() {
+        document.getElementById('mcp-status').textContent = '切断/エラー';
+    };
     eventSource.onmessage = function(event) {
         try {
             const cmd = JSON.parse(event.data);
+            document.getElementById('mcp-lastcmd').textContent = event.data;
             handleMcpCommand(cmd);
         } catch (e) {
             console.error("MCPコマンドのパース失敗", e, event.data);
