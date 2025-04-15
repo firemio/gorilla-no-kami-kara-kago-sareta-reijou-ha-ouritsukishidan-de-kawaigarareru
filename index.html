@@ -130,6 +130,12 @@
             <div class="history-title">履歴</div>
             <div id="history-container"></div>
         </div>
+        
+        <!-- 追加: 最頻単語集計ボタンと結果表示欄 -->
+        <div style="margin-top:30px;">
+            <button onclick="showMostFrequentWords()">100回実行して最頻単語を表示</button>
+            <div id="most-frequent-result" style="margin-top:10px; font-size:14px; background:#f4f8ff; padding:10px; border-radius:6px;"></div>
+        </div>
     </div>
 
     <script>
@@ -193,6 +199,93 @@
             // 履歴表示を更新
             updateHistoryDisplay();
         }
+    // === 最頻単語集計機能 ===
+    function showMostFrequentWords() {
+        // 出現回数カウント用オブジェクト
+        const counters = {
+            animals: {}, deities: {}, blessings: {}, characters: {}, places: {}, verbs: {}
+        };
+        for (let i = 0; i < 100; i++) {
+            const animal = getRandomElement(words.animals);
+            const deity = getRandomElement(words.deities);
+            const blessing = getRandomElement(words.blessings);
+            const character = getRandomElement(words.characters);
+            const place = getRandomElement(words.places);
+            const verb = getRandomElement(words.verbs);
+            counters.animals[animal] = (counters.animals[animal] || 0) + 1;
+            counters.deities[deity] = (counters.deities[deity] || 0) + 1;
+            counters.blessings[blessing] = (counters.blessings[blessing] || 0) + 1;
+            counters.characters[character] = (counters.characters[character] || 0) + 1;
+            counters.places[place] = (counters.places[place] || 0) + 1;
+            counters.verbs[verb] = (counters.verbs[verb] || 0) + 1;
+        }
+        function getMostFrequent(counter) {
+            const max = Math.max(...Object.values(counter));
+            return Object.keys(counter).filter(key => counter[key] === max);
+        }
+        const mostFrequentWords = {
+            animals: getMostFrequent(counters.animals),
+            deities: getMostFrequent(counters.deities),
+            blessings: getMostFrequent(counters.blessings),
+            characters: getMostFrequent(counters.characters),
+            places: getMostFrequent(counters.places),
+            verbs: getMostFrequent(counters.verbs)
+        };
+        // 結果を整形して表示
+        let html = '<b>カテゴリごとの最頻単語（100回ランダム）</b><br><ul style="margin:0; padding-left:1.2em;">';
+        for (const key in mostFrequentWords) {
+            html += `<li><b>${key}</b>: ${mostFrequentWords[key].map(w=>`<span style='color:#005; font-weight:bold;'>${w}</span>`).join(', ')}</li>`;
+        }
+        html += '</ul>';
+        document.getElementById('most-frequent-result').innerHTML = html;
+    }
+
+    // === MCP (SSE) クライアント ===
+    // サーバー例: http://localhost:5000/sse
+    const sseUrl = "http://localhost:5000/sse"; // 必要に応じて書き換え
+    const eventSource = new EventSource(sseUrl);
+
+    eventSource.onmessage = function(event) {
+        try {
+            const cmd = JSON.parse(event.data);
+            handleMcpCommand(cmd);
+        } catch (e) {
+            console.error("MCPコマンドのパース失敗", e, event.data);
+        }
+    };
+
+    /**
+     * MCPコマンドハンドラ
+     * 例:
+     *   { action: "set", target: "animal", value: "カバ" } → .animalのテキスト変更
+     *   { action: "style", target: "result", css: { color: "red" } } → .resultのスタイル変更
+     *   { action: "generate" } → generateTitle()実行
+     *   { action: "clearHistory" } → 履歴をクリア
+     */
+    function handleMcpCommand(cmd) {
+        // テキスト変更
+        if (cmd.action === "set") {
+            const el = document.querySelector(`.${cmd.target}`);
+            if (el) el.textContent = cmd.value;
+        }
+        // スタイル変更
+        if (cmd.action === "style") {
+            const el = document.querySelector(`.${cmd.target}`);
+            if (el && cmd.css) {
+                Object.entries(cmd.css).forEach(([k, v]) => { el.style[k] = v; });
+            }
+        }
+        // ランダムタイトル生成
+        if (cmd.action === "generate") {
+            generateTitle();
+        }
+        // 履歴クリア
+        if (cmd.action === "clearHistory") {
+            titleHistory = [];
+            updateHistoryDisplay();
+        }
+        // 他のアクションもここに追加できます
+    }
     </script>
 </body>
 </html>
